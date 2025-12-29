@@ -36,6 +36,11 @@ public class User {
     
     private String fullName;
 
+    @Column(unique = true)
+    private String googleId;
+
+    private String imageUrl;
+
     @Default
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
