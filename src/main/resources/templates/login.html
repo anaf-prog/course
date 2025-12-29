@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="id" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Course Management</title>
+    
+    <!-- AdminLTE CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.2.0/css/adminlte.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+
+</head>
+<body class="login-page">
+    <div class="login-box">
+        <div class="card login-card">
+            <div class="card-header login-card-header">
+                <div class="login-logo">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h3 class="mb-1">Course Management</h3>
+                <p class="mb-0">Admin Portal</p>
+            </div>
+            
+            <div class="card-body login-card-body">
+                <!-- Notif Error Messages -->
+                <div th:if="${param.error}" class="alert alert-danger alert-dismissible fade show error-message" role="alert">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span th:text="${session['SPRING_SECURITY_LAST_EXCEPTION']?.message} ?: 'Invalid email or password'">
+                        Invalid email or password
+                    </span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                
+                <!-- Login Form -->
+                <form th:action="@{/form_login}" method="post" id="loginForm">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                <i class="fas fa-envelope"></i>
+                            </span>
+                        </div>
+                        <input type="email" 
+                               class="form-control" 
+                               name="email" 
+                               placeholder="Email Address" 
+                               required
+                               autofocus>
+                    </div>
+                    
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                <i class="fas fa-lock"></i>
+                            </span>
+                        </div>
+                        <input type="password" 
+                               class="form-control" 
+                               name="password" 
+                               placeholder="Password" 
+                               required
+                               id="password">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="remember-forgot">
+                        <div class="icheck-primary">
+                            <input type="checkbox" id="remember" name="remember">
+                            <label for="remember">Remember Me</label>
+                        </div>
+                        <div>
+                            <a href="#" class="text-decoration-none">Forgot Password?</a>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-login btn-block">
+                                <i class="fas fa-sign-in-alt"></i> Sign In
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                
+                <div class="divider">
+                    <span>OR</span>
+                </div>
+                
+                <!-- Google Login Button -->
+                <div class="row">
+                    <div class="col-12">
+                        <a th:href="@{/oauth2/authorization/google}" class="btn btn-google btn-block">
+                            <i class="fab fa-google"></i> Sign in with Google
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="login-footer">
+                    <p>© 2025 Course Management System. All rights reserved.</p>
+                    <p>Need help? <a href="mailto:support@course.com">Contact Support</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery & Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.2.0/js/adminlte.min.js"></script>
+    
+    <!-- Custom Script -->
+    <script>
+        $(document).ready(function() {
+            // Toggle password visibility
+            $('#togglePassword').click(function() {
+                const passwordField = $('#password');
+                const type = passwordField.attr('type') === 'password' ? 'text' : 'password';
+                passwordField.attr('type', type);
+                $(this).find('i').toggleClass('fa-eye fa-eye-slash');
+            });
+            
+            // Form submission animation
+            $('#loginForm').submit(function(e) {
+                const submitBtn = $(this).find('button[type="submit"]');
+                submitBtn.html('<i class="fas fa-spinner fa-spin"></i> Signing In...');
+                submitBtn.prop('disabled', true);
+                
+                // Simulate API call delay
+                setTimeout(() => {
+                    submitBtn.html('<i class="fas fa-sign-in-alt"></i> Sign In');
+                    submitBtn.prop('disabled', false);
+                }, 2000);
+            });
+            
+            // Alert auto dismiss
+            $('.alert').delay(5000).fadeOut('slow');
+            
+            // Focus on email field
+            $('input[name="email"]').focus();
+            
+            // Enter key to submit
+            $(document).keypress(function(e) {
+                if (e.which === 13) {
+                    $('#loginForm').submit();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
