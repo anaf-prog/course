@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add New Post</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.2.0/css/adminlte.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .content-wrapper { margin-left: 0 !important; }
+        .form-group { margin-bottom: 1.5rem; }
+    </style>
+</head>
+<body class="hold-transition sidebar-collapse">
+<div class="wrapper">
+
+    <!-- Navbar (sama seperti dashboard) -->
+    <nav class="main-header navbar navbar-expand-md navbar-white navbar-light border-bottom">
+        <a class="navbar-brand" href="/admin/dashboard">
+            <i class="fas fa-graduation-cap"></i>
+            <span class="d-none d-md-inline ml-2">AutoCAD Admin</span>
+        </a>
+        
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a href="/admin/dashboard" class="nav-link">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span class="d-none d-md-inline">Dashboard</span>
+                    </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="/admin/users" class="nav-link">
+                        <i class="fas fa-users"></i>
+                        <span class="d-none d-md-inline">Users</span>
+                    </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="/admin/courses" class="nav-link">
+                        <i class="fas fa-book"></i>
+                        <span class="d-none d-md-inline">Courses</span>
+                    </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="/admin/posts" class="nav-link active">
+                        <i class="fas fa-newspaper"></i>
+                        <span class="d-none d-md-inline">Posts</span>
+                    </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="/admin/enrollments" class="nav-link">
+                        <i class="fas fa-clipboard-list"></i>
+                        <span class="d-none d-md-inline">Enrollments</span>
+                    </a>
+                </li>
+            </ul>
+            
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span class="d-none d-md-inline">Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="content-wrapper">
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>Add New Post</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="/admin/dashboard">Home</a></li>
+                            <li class="breadcrumb-item"><a href="/admin/posts">Posts</a></li>
+                            <li class="breadcrumb-item active">New Post</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="content">
+            <div class="container-fluid">
+                <!-- Success/Error Messages -->
+                <div th:if="${successMessage}" class="alert alert-success alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <span th:text="${successMessage}"></span>
+                </div>
+                
+                <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <span th:text="${errorMessage}"></span>
+                </div>
+
+                <!-- Post Form -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Create New Post</h3>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="@{/admin/posts}" th:object="${post}" method="post">
+                            <div class="form-group">
+                                <label for="title">Title *</label>
+                                <input type="text" class="form-control" id="title" 
+                                       th:field="*{title}" required
+                                       placeholder="Enter post title"
+                                       maxlength="200">
+                                <small class="form-text text-muted">
+                                    Maximum 200 characters. <span id="titleCounter">0/200</span>
+                                </small>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="content">Content *</label>
+                                <textarea class="form-control" id="content" 
+                                          th:field="*{content}" rows="15" required
+                                          placeholder="Write your post content here..."></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="imageUrl">Image URL (Optional)</label>
+                                <input type="url" class="form-control" id="imageUrl" 
+                                       th:field="*{imageUrl}"
+                                       placeholder="https://example.com/image.jpg">
+                                <small class="form-text text-muted">
+                                    Add an image URL to display with your post
+                                </small>
+                            </div>
+                            
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save"></i> Create Post
+                                </button>
+                                <a href="/admin/posts" class="btn btn-default ml-2">
+                                    <i class="fas fa-times"></i> Cancel
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer class="main-footer text-center">
+        <strong>Copyright © 2025 AutoCAD Courses.</strong> All rights reserved.
+    </footer>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.2.0/js/adminlte.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        // Character counter for title
+        $('#title').on('input', function() {
+            var length = $(this).val().length;
+            $('#titleCounter').text(length + '/200');
+            
+            if (length > 200) {
+                $(this).val($(this).val().substring(0, 200));
+                $('#titleCounter').text('200/200');
+            }
+        });
+        
+        // Trigger on page load
+        $('#title').trigger('input');
+        
+        // Auto-resize textarea
+        $('#content').on('input', function() {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        });
+        
+        // Trigger on page load if content exists
+        $('#content').trigger('input');
+    });
+</script>
+</body>
+</html>
