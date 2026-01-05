@@ -178,6 +178,7 @@
 					</archive>
 					<excludes>
 						<exclude>application.properties</exclude>
+						<exclude>application.yml</exclude>
 						<exclude>logback-spring.xml</exclude>
 					</excludes>
 				</configuration>
