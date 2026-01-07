@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
@@ -53,7 +54,7 @@ public class PostController {
                 email = authentication.getName();
             }
 
-            User author = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+            User author = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
             post.setUser(author);
             post.setCreatedAt(LocalDateTime.now());
