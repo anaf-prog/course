@@ -1,22 +1,17 @@
 package com.course.config;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 import lombok.Data;
 
-@Configuration
+@Component
+@ConfigurationProperties(prefix = "jwt")
 @Data
 public class JwtConfig {
-    
-    @Value("${jwt.secret}")
+
     private String secret;
-    
-    @Value("${jwt.expiration}")
-    private Long expiration;
-    
-    @Value("${jwt.header}")
+    private long expiration;
     private String header;
-    
-    @Value("${jwt.prefix}")
     private String prefix;
 }
+

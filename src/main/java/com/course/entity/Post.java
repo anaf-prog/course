@@ -38,6 +38,8 @@ public class Post {
 
     private String imageUrl;
 
+    private String imageId;
+
     private LocalDateTime createdAt;
     
     private LocalDateTime updatedAt;

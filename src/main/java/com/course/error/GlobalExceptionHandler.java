@@ -34,28 +34,5 @@ public class GlobalExceptionHandler {
                 "User tidak ditemukan"
             ));
     }
-
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ErrorResponse> handleRuntime(RuntimeException ex) {
-        log.info("Runtime error : " + ex);
-
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .body(new ErrorResponse(
-                500,
-                "Terjadi kesalahan pada server"
-            ));
-
-    }
-
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleGeneric(Exception ex) {
-        log.info("Error lainnya : " + ex);
-
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .body(new ErrorResponse(
-                500,
-                "Error lainnya"
-            ));
-    }
     
 }
