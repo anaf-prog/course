@@ -1,7 +1,6 @@
 package com.course.service;
 
 import java.time.LocalDateTime;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -9,7 +8,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
@@ -18,6 +16,8 @@ import com.course.dto.post.PostRequest;
 import com.course.dto.post.PostResponse;
 import com.course.entity.Post;
 import com.course.entity.User;
+import com.course.error.custom.BusinessException;
+import com.course.error.custom.LoginException;
 import com.course.repository.PostRepository;
 import com.course.repository.UserRepository;
 import io.imagekit.sdk.ImageKit;
@@ -60,7 +60,7 @@ public class PostService {
             email = authentication.getName();
         }
 
-        User author = userRepository.findByEmail(email).orElseThrow(()-> new UsernameNotFoundException("User tidak ditemukan"));
+        User author = userRepository.findByEmail(email).orElseThrow(()-> new LoginException("User tidak ditemukan"));
 
         Post post = new Post();
         post.setTitle(request.getTitle());
@@ -86,7 +86,7 @@ public class PostService {
                 log.info("Gambar berhasil di upload");
             } catch (Exception e) {
                 log.error("Gagal upload ke ImageKit: {}", e.getMessage());
-                throw new RuntimeException("Gagal mengunggah gambar");
+                throw new BusinessException("Gagal mengunggah gambar");
             }
         }
 
@@ -119,9 +119,9 @@ public class PostService {
             email = authentication.getName();
         }
 
-        User editor = userRepository.findByEmail(email).orElseThrow(()-> new UsernameNotFoundException("User tidak ditemukan"));
+        User editor = userRepository.findByEmail(email).orElseThrow(()-> new BusinessException("User tidak ditemukan"));
 
-        Post post = postRepository.findById(postId).orElseThrow(()-> new RuntimeException("Postingan tidak ditemukan"));
+        Post post = postRepository.findById(postId).orElseThrow(()-> new BusinessException("Postingan tidak ditemukan"));
 
         if (!post.getUser().getId().equals(editor.getId())) {
             log.info("Tidak ada akses untuk edit posingan");
@@ -154,7 +154,7 @@ public class PostService {
                 log.info("Gambar berhasil di upload");
             } catch (Exception e) {
                 log.error("Gagal upload ke ImageKit: {}", e.getMessage());
-                throw new RuntimeException("Gagal mengunggah gambar");
+                throw new BusinessException("Gagal mengunggah gambar");
             }
         }
 

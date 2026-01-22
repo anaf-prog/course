@@ -5,7 +5,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +14,7 @@ import com.course.dto.ApiResponse;
 import com.course.dto.LoginRequest;
 import com.course.dto.LoginResponse;
 import com.course.entity.User;
+import com.course.error.custom.LoginException;
 import com.course.repository.UserRepository;
 import com.course.security.JwtUtil;
 
@@ -45,7 +45,7 @@ public class ApiLogin {
 
         String email = authentication.getName();
 
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User tidak ditemukan"));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new LoginException("User tidak terdaftar"));
 
         String token = jwtUtil.generateToken(user);
 

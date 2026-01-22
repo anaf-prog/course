@@ -51,6 +51,8 @@ public class User {
     
     private LocalDateTime createdAt;
 
+    private String telegramChatId;
+
     public enum Role {
         USER,
         ADMIN
